@@ -1,3 +1,20 @@
 on:
  workflow_dispatch: 
 schedule: - cron: '0 9 * * *'
+permissions: 
+    contents: read
+jobs: 
+	agent-task: 
+		runs-on: ubuntu-latest
+uses: actions/checkout@v4
+uses: actions/setup-node@v4 
+with: node-version: '18'
+env: COPILOT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+run: | npx @github/copilot-cli 
+-p "Summarize recent changes in this repository" 
+--no-ask-user (Optional)
+run: | npx @github/copilot-cli 
+--agent security-reviewer 
+-p "Review this code for vulnerabilities" 
+--no-ask-user
+  
